@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Walentynka dla Jakuba</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #ffdde6;
+    }
+
+    /* Animowane tło z serduszkami */
+    .hearts {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        transform: rotate(45deg);
+        animation: floatUp 6s linear infinite;
+    }
+
+    .heart:before,
+    .heart:after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        border-radius: 50%;
+    }
+
+    .heart:before {
+        top: -10px;
+        left: 0;
+    }
+
+    .heart:after {
+        left: -10px;
+        top: 0;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(100vh) rotate(45deg); opacity: 1; }
+        100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+    }
+
+    /* Pytanie */
+    h1 {
+        margin-top: 40px;
+        font-size: 32px;
+        color: #d1005d;
+        font-weight: bold;
+    }
+
+    /* Króliczek */
+    .bunny {
+        width: 200px;
+        margin-top: 20px;
+    }
+
+    /* Przyciski */
+    .btn {
+        padding: 15px 30px;
+        font-size: 22px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 20px;
+    }
+
+    #yesBtn {
+        background-color: #ff4fa3;
+        color: white;
+    }
+
+    #noBtn {
+        background-color: #999;
+        color: white;
+        position: absolute;
+    }
+
+    /* Efekty po kliknięciu TAK */
+    #loveMessage {
+        display: none;
+        font-size: 50px;
+        color: #ff0066;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .dog {
+        display: none;
+        width: 250px;
+        margin-top: 20px;
+        animation: dance 1s infinite alternate;
+    }
+
+    @keyframes dance {
+        from { transform: rotate(-10deg); }
+        to { transform: rotate(10deg); }
+    }
+
+    /* Fajerwerki */
+    .firework {
+        position: fixed;
+        width: 5px;
+        height: 5px;
+        background: transparent;
+        border-radius: 50%;
+        animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(20); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<div class="hearts"></div>
+
+<h1>Czy zostaniesz moją walentynką Jakubie?</h1>
+
+<img class="bunny" src="https://i.imgur.com/4AiXzf8.png" alt="Króliczek z kwiatkami">
+
+<br>
+
+<button id="yesBtn" class="btn">Tak ❤️</button>
+<button id="noBtn" class="btn">Nie 😢</button>
+
+<div id="loveMessage">Kocham Cię! ❤️</div>
+<img class="dog" id="dog" src="https://i.imgur.com/3ZQ3Z4R.gif" alt="Tańczący piesek">
+
+<script>
+    // Tworzenie serduszek
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+        document.querySelector(".hearts").appendChild(heart);
+
+        setTimeout(() => heart.remove(), 8000);
+    }
+    setInterval(createHeart, 300);
+
+    // Uciekający przycisk "Nie"
+    const noBtn = document.getElementById("noBtn");
+    noBtn.addEventListener("mouseover", () => {
+        noBtn.style.left = Math.random() * 80 + "vw";
+        noBtn.style.top = Math.random() * 80 + "vh";
+    });
+
+    // Fajerwerki
+    function firework(x, y) {
+        for (let i = 0; i < 20; i++) {
+            const fw = document.createElement("div");
+            fw.classList.add("firework");
+            fw.style.left = x + "px";
+            fw.style.top = y + "px";
+            fw.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            document.body.appendChild(fw);
+            setTimeout(() => fw.remove(), 1000);
+        }
+    }
+
+    // Po kliknięciu TAK
+    document.getElementById("yesBtn").addEventListener("click", (e) => {
+        firework(e.clientX, e.clientY);
+        document.getElementById("loveMessage").style.display = "block";
+        document.getElementById("dog").style.display = "block";
+    });
+</script>
+
+</body>
+</html>
